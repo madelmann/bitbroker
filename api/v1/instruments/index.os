@@ -3,15 +3,13 @@
 // Library imports
 
 // Project imports
+import libs.API.Utils;
 import libs.Database.Tables.Instrument;
 import libs.MainProcessJsonDB;
 
 
 public void Process( int argc, string args ) {
-	string instrumentCode;
-	if ( isSet( "instrument_code" ) ) {
-		instrumentCode = mysql_real_escape_string( Database.Handle, get( "instrument_code" ) );
-	}
+	var instrumentCode = API.retrieve( "instrument_code", "" );
 
 	if ( instrumentCode ) {
 		GetInstrument( instrumentCode );
@@ -51,6 +49,7 @@ private void GetInstrument( string instrumentCode ) throws {
 		Json.AddElement( "amount_precision", record.AmountPrecision );
 		Json.AddElement( "market_precision", record.MarketPrecision );
 		Json.AddElement( "min_size", record.MinSize );
+		Json.AddElement( "state", record.State );
 
 		return;
 	}

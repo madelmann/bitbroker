@@ -3,24 +3,17 @@
 // Library imports
 
 // Project imports
+import libs.API.Utils;
 import libs.Database.Tables.Balance;
 import libs.MainExecuteDB;
 
 
 public bool Execute( int argc, string args ) throws {
-	if ( !isSet( "account_id" ) ) {
-		throw "missing account_id";
-	}
-	if ( !isSet( "amount" ) ) {
-		throw "missing amount";
-	}
-	if ( !isSet( "currency_code" ) ) {
-		throw "missing currency_code";
-	}
+	API.VerifyAccount();
 
-	var accountId = mysql_real_escape_string( Database.Handle, get( "account_id" ) );
-	var amount = cast<double>( mysql_real_escape_string( Database.Handle, get( "amount" ) ) );
-	var currencyCode = mysql_real_escape_string( Database.Handle, get( "currency_code" ) );
+	var accountId    = API.retrieve( "account_id" );
+	var amount       = cast<double>( API.retrieve( "amount" ) );
+	var currencyCode = API.retrieve( "currency_code" );
 
 	var balance = new TBalanceRecord( Database.Handle );
 	try {

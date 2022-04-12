@@ -3,16 +3,15 @@
 // Library imports
 
 // Project imports
+import libs.API.Utils;
 import libs.Database.Utils;
 import libs.MainExecuteDB;
 
 
 public bool Execute( int argc, string args ) throws {
-	if ( !isSet( "account_id" ) ) {
-		throw "missing account_id";
-	}
+	API.VerifyAccount();
 
-	var accountId = mysql_real_escape_string( Database.Handle, get( "account_id" ) );
+	var accountId = API.retrieve( "account_id" );
 
 	Database.Execute( "DELETE FROM account WHERE id = '" + accountId + "'" );
 

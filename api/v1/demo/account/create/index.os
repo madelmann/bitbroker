@@ -9,9 +9,8 @@ import libs.MainProcessJsonDB;
 
 
 public void Process( int argc, string args ) throws {
-
-	int result = Database.Query( "SELECT SHA2( NOW(), 256 ) AS account_id" );
-	if ( !mysql_fetch_row( result ) ) {
+	var result = Database.Query( "SELECT SHA2( NOW(), 256 ) AS account_id" );
+	if ( !Database.FetchRow() ) {
 		throw "error while creating account";
 	}
 

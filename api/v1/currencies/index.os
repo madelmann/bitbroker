@@ -3,15 +3,13 @@
 // Library imports
 
 // Project imports
+import libs.API.Utils;
 import libs.Database.Tables.Currency;
 import libs.MainProcessJsonDB;
 
 
 public void Process( int argc, string args ) {
-	string currencyCode;
-	if ( isSet( "currency_code" ) ) {
-		currencyCode = mysql_real_escape_string( Database.Handle, get( "currency_code" ) );
-	}
+	var currencyCode = API.retrieve( "currency_code", "" );
 
 	if ( currencyCode ) {
 		GetCurrency( currencyCode );

@@ -3,14 +3,15 @@
 // Library imports
 
 // Project imports
+import libs.API.Utils;
 import libs.Database.Views.VMarketTicker;
 import libs.MainProcessJsonDB;
 
 
 public void Process( int argc, string args ) {
-	if ( isSet( "instrument_code" ) ) {
-		string instrumentCode = mysql_real_escape_string( Database.Handle, get( "instrument_code" ) );
+	var instrumentCode = API.retrieve( "instrument_code", "" );
 
+	if ( instrumentCode ) {
 		GetSingleMarketTicker( instrumentCode );
 	}
 	else {

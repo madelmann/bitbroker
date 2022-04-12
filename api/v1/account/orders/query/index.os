@@ -12,8 +12,8 @@ import libs.MainProcessJsonDB;
 public void Process( int argc, string args ) throws {
 	API.VerifyAccount();
 
-	var accountId = mysql_real_escape_string( Database.Handle, get( "account_id" ) );
-	var orderId = mysql_real_escape_string( Database.Handle, get( "order_id" ) );
+	var accountId = API.retrieve( "account_id" );
+	var orderId   = API.retrieve( "order_id", "" );
 
 	if ( orderId ) {
 		retrieveSingleOrder( accountId, orderId );
@@ -41,8 +41,8 @@ private void retrieveAllOrders( string accountId ) {
 		if ( newOrder ) {
 			string orderStatus;
 			switch ( record.StatusId ) {
-				case OrderStatus.OPEN: { orderStatus = "OPEN"; break; }
-				case OrderStatus.FILLED: { orderStatus = "FILLED"; break; }
+				case OrderStatus.OPEN:      { orderStatus = "OPEN";      break; }
+				case OrderStatus.FILLED:    { orderStatus = "FILLED";    break; }
 				case OrderStatus.CANCELLED: { orderStatus = "CANCELLED"; break; }
 			}
 	
@@ -92,8 +92,8 @@ private void retrieveSingleOrder( string accountId, string orderId ) {
 
 		string orderStatus;
 		switch ( order.StatusId ) {
-			case OrderStatus.OPEN: { orderStatus = "OPEN"; break; }
-			case OrderStatus.FILLED: { orderStatus = "FILLED"; break; }
+			case OrderStatus.OPEN:      { orderStatus = "OPEN";      break; }
+			case OrderStatus.FILLED:    { orderStatus = "FILLED";    break; }
 			case OrderStatus.CANCELLED: { orderStatus = "CANCELLED"; break; }
 		}
 

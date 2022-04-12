@@ -11,7 +11,7 @@ import libs.MainProcessJsonDB;
 public void Process( int argc, string args ) throws {
 	API.VerifyAccount();
 
-	var accountId = API.retrieve( "account_id" );
+	var accountId    = API.retrieve( "account_id" );
 	var currencyCode = API.retrieve( "currency_code", "" );
 
 	if ( currencyCode ) {

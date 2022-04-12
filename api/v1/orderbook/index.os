@@ -3,16 +3,13 @@
 // Library imports
 
 // Project imports
+import libs.API.Utils;
 import libs.MainProcessJsonDB;
 import libs.OrderEngine.OrderBook;
 
 
 public void Process( int argc, string args ) throws {
-	if ( !isSet( "instrument_code" ) ) {
-		throw "missing instrument_code";
-	}
-
-	string instrumentCode = mysql_real_escape_string( Database.Handle, get( "instrument_code" ) );
+	var instrumentCode = API.retrieve( "instrument_code" );
 
 	GetOrdersByInstrument( instrumentCode );
 }
