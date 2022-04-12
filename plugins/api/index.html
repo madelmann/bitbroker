@@ -33,7 +33,7 @@ Request: <a href='/api/v1/demo/account/create'>GET /api/v1/demo/account/create/<
 Response:
 <pre>
 {
-	\"account_id\": \"3ad99c176956667e2c3252f82e8c290c32d82c3c8c13f7f43ba45c6549362ad8\"
+	"account_id": "3ad99c176956667e2c3252f82e8c290c32d82c3c8c13f7f43ba45c6549362ad8"
 }
 </pre>
 </p>
@@ -62,7 +62,7 @@ Request: <a href='/api/v1/demo/account/delete'>GET /api/v1/demo/account/delete/<
 Response:
 <pre>
 {
-	\"result\": \"success\"
+	"result": "success"
 }
 </pre>
 </p>
@@ -78,15 +78,15 @@ Request: <a href='/api/v1/demo/account/query'>GET /api/v1/demo/account/query/</a
 Response:
 <pre>
 {
-	\"accounts\": [{
-		\"account_id\": \"362cd92f7cc7b5895c3319a528a5831c1c0960efec8fefaf79760e5d38eb3da4\",
-		\"time\": \"2021-01-09 12:49:01\"
+	"accounts": [{
+		"account_id": "362cd92f7cc7b5895c3319a528a5831c1c0960efec8fefaf79760e5d38eb3da4",
+		"time": "2021-01-09 12:49:01"
 	}, {
-		\"account_id\": \"3ad99c176956667e2c3252f82e8c290c32d82c3c8c13f7f43ba45c6549362ad8\",
-		\"time\": \"2021-01-09 12:30:52\"
+		"account_id": "3ad99c176956667e2c3252f82e8c290c32d82c3c8c13f7f43ba45c6549362ad8",
+		"time": "2021-01-09 12:30:52"
 	}, {
-		\"account_id\": \"6b86b273ff34fce19d6b804eff5a3f57\",
-		\"time\": \"2021-01-09 12:20:53\"
+		"account_id": "6b86b273ff34fce19d6b804eff5a3f57",
+		"time": "2021-01-09 12:20:53"
 	}]
 }
 </pre>
@@ -126,7 +126,7 @@ Request: <a href='/api/v1/demo/account/deposit'>GET /api/v1/demo/account/deposit
 Response:
 <pre>
 {
-	\"result\": \"success\"
+	"result": "success"
 }
 </pre>
 </p>
@@ -165,7 +165,7 @@ Request: <a href='/api/v1/demo/account/withdraw'>GET /api/v1/demo/account/withdr
 Response:
 <pre>
 {
-	\"result\": \"success\"
+	"result": "success"
 }
 </pre>
 </p>
@@ -198,15 +198,15 @@ Request: <a href='/api/v1/currencies/'>GET /api/v1/currencies/</a>
 Response:
 <pre>
 {
-	\"currencies\": [{
-		\"code\": \"BTC\",
-		\"precision\": 8
+	"currencies": [{
+		"code": "BTC",
+		"precision": 8
 	}, {
-		\"code\": \"ETH\",
-		\"precision\": 8
+		"code": "ETH",
+		"precision": 8
 	}, {
-		\"code\": \"EUR\",
-		\"precision\": 2
+		"code": "EUR",
+		"precision": 2
 	}]
 }
 </pre>
@@ -237,20 +237,20 @@ Request: <a href='/api/v1/instruments/'>GET /api/v1/instruments/</a>
 Response:
 <pre>
 {
-	\"instruments\": [{
-		\"instrument_code\": \"BTC_EUR\",
-		\"base\": \"BTC\",
-		\"quote\": \"EUR\",
-		\"amount_precision\": 2,
-		\"market_precision\": 8,
-		\"min_size\": 10
+	"instruments": [{
+		"instrument_code": "BTC_EUR",
+		"base": "BTC",
+		"quote": "EUR",
+		"amount_precision": 2,
+		"market_precision": 8,
+		"min_size": 10
 	}, {
-		\"instrument_code\": \"ETH_EUR\",
-		\"base\": \"ETH\",
-		\"quote\": \"EUR\",
-		\"amount_precision\": 2,
-		\"market_precision\": 8,
-		\"min_size\": 10
+		"instrument_code": "ETH_EUR",
+		"base": "ETH",
+		"quote": "EUR",
+		"amount_precision": 2,
+		"market_precision": 8,
+		"min_size": 10
 	}]
 }
 </pre>
@@ -281,12 +281,12 @@ Request: <a href='/api/v1/marketticker/'>GET /api/v1/marketticker/</a>
 Response:
 <pre>
 {
-	\"instruments\": [{
-		\"instrument_code\": \"ETH_EUR\",
-		\"best_ask\": 1000,
-		\"best_bid\": 900,
-		\"last_price\": 900,
-		\"time\": \"2021-01-09T11:27:00\"
+	"instruments": [{
+		"instrument_code": "ETH_EUR",
+		"best_ask": 1000,
+		"best_bid": 900,
+		"last_price": 900,
+		"time": "2021-01-09T11:27:00"
 	}]
 }
 </pre>
@@ -317,21 +317,21 @@ Request: <a href='/api/v1/orderbook/'>GET /api/v1/orderbook/</a>
 Response:
 <pre>
 {
-	\"instrument_code\": \"ETH_EUR\",
-	\"time\": \"2021-01-09T11:29:40\",
-	\"asks\": [{
-		\"amount\": 5,
-		\"filled_amount\": 0.2,
-		\"price\": 900
+	"instrument_code": "ETH_EUR",
+	"time": "2021-01-09T11:29:40",
+	"asks": [{
+		"amount": 5,
+		"filled_amount": 0.2,
+		"price": 900
 	}],
-	\"bids\": [{
-		\"amount\": 2,
-		\"filled_amount\": 0.1,
-		\"price\": 997
+	"bids": [{
+		"amount": 2,
+		"filled_amount": 0.1,
+		"price": 997
 	}, {
-		\"amount\": 0.5,
-		\"filled_amount\": 0,
-		\"price\": 999
+		"amount": 0.5,
+		"filled_amount": 0,
+		"price": 999
 	}]
 }
 </pre>
@@ -349,7 +349,7 @@ Request: <a href='/api/v1/ping/'>GET /api/v1/ping</a>
 Request:
 <pre>
 {
-	\"result\": \"pong\"
+	"result": "pong"
 }
 </pre>
 </p>
@@ -366,8 +366,8 @@ Request: <a href='/api/v1/time/'>GET /api/v1/time</a>
 Response:
 <pre>
 {
-	\"iso\": \"2021-01-09T11:31:32\",
-	\"epoch\": 1610188292
+	"iso": "2021-01-09T11:31:32",
+	"epoch": 1610188292
 }
 </pre>
 </p>
@@ -405,12 +405,12 @@ Request: <a href='/api/v1/account/balances/'>GET /api/v1/account/balances/</a>
 Response:
 <pre>
 {
-	\"account_id\": \"6b86b273ff34fce19d6b804eff5a3f57\",
-	\"balances\": [{
-		\"currency_code\": \"EUR\",
-		\"available\": 0,
-		\"locked\": 0,
-		\"time\": \"2021-01-08 12:32:56\"
+	"account_id": "6b86b273ff34fce19d6b804eff5a3f57",
+	"balances": [{
+		"currency_code": "EUR",
+		"available": 0,
+		"locked": 0,
+		"time": "2021-01-08 12:32:56"
 	}]
 }
 </pre>
@@ -446,7 +446,7 @@ Request: <a href='/api/v1/account/orders/cancel/'>GET /api/v1/account/orders/can
 Response:
 <pre>
 {
-	\"result\": \"success\"
+	"result": "success"
 }
 </pre>
 </p>
@@ -502,16 +502,16 @@ Request: <a href='/api/v1/account/orders/create/'>POST /api/v1/account/orders/cr
 Response:
 <pre>
 {
-	\"account_id\": \"6b86b273ff34fce19d6b804eff5a3f57\",
-	\"amount\": \"0.1\",
-	\"filled_amount\": \"0.1\",
-	\"instrument_code\": \"ETH_EUR\",
-	\"price\": \"997\",
-	\"order_id\": \"2021-01-09T01:29:00-1995522294\",
-	\"side\": \"BUY\",
-	\"status\": \"FILLED\",
-	\"time\": \"2021-01-09T01:29:00\",
-	\"type\": \"MARKET\"
+	"account_id": "6b86b273ff34fce19d6b804eff5a3f57",
+	"amount": "0.1",
+	"filled_amount": "0.1",
+	"instrument_code": "ETH_EUR",
+	"price": "997",
+	"order_id": "2021-01-09T01:29:00-1995522294",
+	"side": "BUY",
+	"status": "FILLED",
+	"time": "2021-01-09T01:29:00",
+	"type": "MARKET"
 }
 </pre>
 </p>
@@ -546,36 +546,36 @@ Request: <a href='/api/v1/account/orders/query/'>GET /api/v1/account/orders/quer
 Response:
 <pre>
 {
-	\"order\": {
-		\"order_id\": \"2021-01-09T01:16:46-1889284441\",
-		\"account_id\": \"6b86b273ff34fce19d6b804eff5a3f57\",
-		\"last_updated\": \"\",
-		\"price\": 900,
-		\"amount\": 5,
-		\"filled_amount\": 0.2,
-		\"instrument_code\": \"ETH_EUR\",
-		\"side\": \"BUY\",
-		\"status\": \"CANCELLED\",
-		\"time\": \"2021-01-09 01:16:46\",
-		\"type\": \"LIMIT\",
-		\"trades\": [{
-			\"trade_id\": \"2021-01-09T01:17:43-978418446\",
-			\"order_id\": \"2021-01-09T01:16:46-1889284441\",
-			\"account_id\": \"6b86b273ff34fce19d6b804eff5a3f57\",
-			\"instrument_code\": \"ETH_EUR\",
-			\"side\": \"BUY\",
-			\"amount\": 0.1,
-			\"price\": 900,
-			\"time\": \"2021-01-09 01:17:43\"
+	"order": {
+		"order_id": "2021-01-09T01:16:46-1889284441",
+		"account_id": "6b86b273ff34fce19d6b804eff5a3f57",
+		"last_updated": "",
+		"price": 900,
+		"amount": 5,
+		"filled_amount": 0.2,
+		"instrument_code": "ETH_EUR",
+		"side": "BUY",
+		"status": "CANCELLED",
+		"time": "2021-01-09 01:16:46",
+		"type": "LIMIT",
+		"trades": [{
+			"trade_id": "2021-01-09T01:17:43-978418446",
+			"order_id": "2021-01-09T01:16:46-1889284441",
+			"account_id": "6b86b273ff34fce19d6b804eff5a3f57",
+			"instrument_code": "ETH_EUR",
+			"side": "BUY",
+			"amount": 0.1,
+			"price": 900,
+			"time": "2021-01-09 01:17:43"
 		}, {
-			\"trade_id\": \"2021-01-09T01:28:26-2118600236\",
-			\"order_id\": \"2021-01-09T01:16:46-1889284441\",
-			\"account_id\": \"6b86b273ff34fce19d6b804eff5a3f57\",
-			\"instrument_code\": \"ETH_EUR\",
-			\"side\": \"BUY\",
-			\"amount\": 0.1,
-			\"price\": 900,
-			\"time\": \"2021-01-09 01:28:26\"
+			"trade_id": "2021-01-09T01:28:26-2118600236",
+			"order_id": "2021-01-09T01:16:46-1889284441",
+			"account_id": "6b86b273ff34fce19d6b804eff5a3f57",
+			"instrument_code": "ETH_EUR",
+			"side": "BUY",
+			"amount": 0.1,
+			"price": 900,
+			"time": "2021-01-09 01:28:26"
 		}]
 	}
 }
@@ -612,14 +612,14 @@ Request: <a href='/api/v1/account/trades/query/'>GET /api/v1/account/trades/quer
 Response:
 <pre>
 {
-	\"trade_id\": \"2021-01-09T01:29:00-142763372\",
-	\"order_id\": \"2021-01-09T01:29:00-1995522294\",
-	\"account_id\": \"6b86b273ff34fce19d6b804eff5a3f57\",
-	\"instrument_code\": \"ETH_EUR\",
-	\"side\": \"BUY\",
-	\"amount\": 0.1,
-	\"price\": 997,
-	\"time\": \"2021-01-09 01:29:00\"
+	"trade_id": "2021-01-09T01:29:00-142763372",
+	"order_id": "2021-01-09T01:29:00-1995522294",
+	"account_id": "6b86b273ff34fce19d6b804eff5a3f57",
+	"instrument_code": "ETH_EUR",
+	"side": "BUY",
+	"amount": 0.1,
+	"price": 997,
+	"time": "2021-01-09 01:29:00"
 }
 </pre>
 </p>
