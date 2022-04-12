@@ -6,6 +6,8 @@ public namespace Database {
 	////////////////////////////////////////////////////////////////////////////////
 	// Query utils
 
+	public int QueryResult;
+
 	public bool Execute( string query ) throws {
 		int error = mysql_query( Database.Handle, query );
 		if ( error ) {
@@ -15,18 +17,30 @@ public namespace Database {
 		return true;
 	}
 
+	public bool FetchRow() throws {
+		if ( !mysql_fetch_row( QueryResult ) ) {
+			throw mysql_error( Database.Handle );
+		}
+
+		return true;
+	}
+
+	public string GetFieldValue( string field ) throws {
+		return mysql_get_field_value( QueryResult, field );
+	}
+
 	public int Query( string query ) throws {
 		int error = mysql_query( Database.Handle, query );
 		if ( error ) {
 			throw mysql_error( Database.Handle );
 		}
 
-		int result = mysql_store_result( Database.Handle );
-		if ( !result ) {
+		QueryResult = mysql_store_result( Database.Handle );
+		if ( !QueryResult ) {
 			throw mysql_error( Database.Handle );
 		}
 
-		return result;
+		return QueryResult;
 	}
 
 	// Query utils
