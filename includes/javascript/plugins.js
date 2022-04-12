@@ -251,7 +251,7 @@ function __loadPluginHTML( pluginName, target, forceCacheRefresh )
 		}
 	};
 
-	var pluginURL = __buildPluginURL( pluginName + "/index.os" + (forceCacheRefresh ? "?v=" + new Date().toString() : ""), true );
+	var pluginURL = __buildPluginURL( pluginName + "/" + (forceCacheRefresh ? "?v=" + new Date().toString() : ""), true );
 
 	xmlhttp.onerror = OnError;
 	xmlhttp.onabort = OnAbort;
@@ -366,7 +366,7 @@ function LoadPluginWindow( pluginName, callback )
 
 	mPlugin = null;
 
-	var pluginURL = __buildPluginURL( pluginName + "/index.os", true );
+	var pluginURL = __buildPluginURL( pluginName + "/", true );
 	window.open( pluginURL, pluginName, 'width=600,height=400' );
 
 	if ( callback ) {
