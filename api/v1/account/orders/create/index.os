@@ -19,6 +19,10 @@ public void Process( int argc, string args ) modify throws {
 	var requestStr = post( "REQUEST" );
 	//print( "Request: '" + requestStr + "'" );
 
+	if ( !requestStr ) {
+		throw "empty request";
+	}
+
 	var reader = new JsonReader();
 	var request = JsonObject reader.parse( requestStr );
 

@@ -11,13 +11,11 @@ import libs.MainProcessJsonDB;
 public void Process( int argc, string args ) throws {
 	API.VerifyAccount();
 
-	string accountId = mysql_real_escape_string( Database.Handle, get( "account_id" ) );
+	var accountId = API.retrieve( "account_id" );
+	var currencyCode = API.retrieve( "currency_code", "" );
 
-	string currency;
-	if ( isSet( "currency" ) ) {
-		currency = mysql_real_escape_string( Database.Handle, get( "currency" ) );
-
-		GetSingleCurrency( accountId, currency );
+	if ( currencyCode ) {
+		GetSingleCurrency( accountId, currencyCode );
 	}
 	else {
 		GetAllCurrencies( accountId );
@@ -32,7 +30,7 @@ private void GetAllCurrencies( string accountId ) throws {
 	Json.BeginArray( "balances" );
 	foreach ( TBalanceRecord record : balances ) {
 		Json.BeginObject();
-		Json.AddElement( "account_id", record.AccountId );
+		//Json.AddElement( "account_id", record.AccountId );
 		Json.AddElement( "currency_code", record.CurrencyCode );
 		Json.AddElement( "available", record.Available );
 		Json.AddElement( "locked", record.Locked );
@@ -42,14 +40,14 @@ private void GetAllCurrencies( string accountId ) throws {
 	Json.EndArray();
 }
 
-private void GetSingleCurrency( string accountId, string currency ) throws {
+private void GetSingleCurrency( string accountId, string currencyCode ) throws {
 	var record = new TBalanceRecord( Database.Handle );
-	record.loadByQuery( "SELECT * FROM balance WHERE account_id = '" + accountId + "' AND currency_code = '" + currency + "'" );
+	record.loadByQuery( "SELECT * FROM balance WHERE account_id = '" + accountId + "' AND currency_code = '" + currencyCode + "'" );
 
 	Json.AddElement( "account_id", accountId );
 	Json.BeginArray( "balances" );
 	Json.BeginObject();
-	Json.AddElement( "account_id", record.AccountId );
+	//Json.AddElement( "account_id", record.AccountId );
 	Json.AddElement( "currency_code", record.CurrencyCode );
 	Json.AddElement( "available", record.Available );
 	Json.AddElement( "locked", record.Locked );

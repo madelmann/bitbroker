@@ -11,8 +11,8 @@ import libs.MainProcessJsonDB;
 public void Process( int argc, string args ) throws {
 	API.VerifyAccount();
 
-	var accountId = mysql_real_escape_string( Database.Handle, get( "account_id" ) );
-	var tradeId = mysql_real_escape_string( Database.Handle, get( "trade_id" ) );
+	var accountId = API.retrieve( "account_id" );
+	var tradeId   = API.retrieve( "trade_id", "" );
 
 	if ( tradeId ) {
 		retrieveSingleTrade( accountId, tradeId );
@@ -29,9 +29,9 @@ private void retrieveAllTrades( string accountId ) throws {
 	Json.BeginArray( "trades" );
 	foreach ( TTradeRecord trade : collection ) {
 		Json.BeginObject();
+		Json.AddElement( "account_id", trade.AccountId );
 		Json.AddElement( "trade_id", trade.TradeId );
 		Json.AddElement( "order_id", trade.OrderId );
-		Json.AddElement( "account_id", trade.AccountId );
 		Json.AddElement( "instrument_code", trade.InstrumentCode );
 		Json.AddElement( "side", trade.Side );
 		Json.AddElement( "amount", trade.Amount );
@@ -46,9 +46,9 @@ private void retrieveSingleTrade( string accountId, string tradeId ) throws {
 	var trade = new TTradeRecord( Database.Handle );
 	trade.loadByQuery( "SELECT * FROM trade WHERE account_id = '" + accountId + "' AND trade_id = '" + tradeId + "' LIMIT 1" );
 
+	Json.AddElement( "account_id", trade.AccountId );
 	Json.AddElement( "trade_id", trade.TradeId );
 	Json.AddElement( "order_id", trade.OrderId );
-	Json.AddElement( "account_id", trade.AccountId );
 	Json.AddElement( "instrument_code", trade.InstrumentCode );
 	Json.AddElement( "side", trade.Side );
 	Json.AddElement( "amount", trade.Amount );
