@@ -9,6 +9,7 @@ public object VOrdersWithTradesRecord {
 	public string Finished;
 	public string Id;
 	public string InstrumentCode;
+	public string LastModified;
 	public string OrderId;
 	public double Price;
 	public string Side;
@@ -53,6 +54,7 @@ public object VOrdersWithTradesRecord {
 		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
 		Id = cast<string>( mysql_get_field_value( result, "id" ) );
 		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
 		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
 		Price = cast<double>( mysql_get_field_value( result, "price" ) );
 		Side = cast<string>( mysql_get_field_value( result, "side" ) );
@@ -84,6 +86,7 @@ public object VOrdersWithTradesRecord {
 		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
 		Id = cast<string>( mysql_get_field_value( result, "id" ) );
 		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
 		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
 		Price = cast<double>( mysql_get_field_value( result, "price" ) );
 		Side = cast<string>( mysql_get_field_value( result, "side" ) );
@@ -103,6 +106,7 @@ public object VOrdersWithTradesRecord {
 		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
 		Id = cast<string>( mysql_get_field_value( result, "id" ) );
 		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
 		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
 		Price = cast<double>( mysql_get_field_value( result, "price" ) );
 		Side = cast<string>( mysql_get_field_value( result, "side" ) );
@@ -119,7 +123,7 @@ public object VOrdersWithTradesRecord {
 	}
 
 	public string =operator( string ) const {
-		return "VOrdersWithTradesRecord { '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + TradeAmount + "', '" + TradeId + "', '" + TradePrice + "', NULLIF('" + TradeTime + "', ''), '" + Type + "' }";
+		return "VOrdersWithTradesRecord { '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', NULLIF('" + LastModified + "', ''), '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + TradeAmount + "', '" + TradeId + "', '" + TradePrice + "', NULLIF('" + TradeTime + "', ''), '" + Type + "' }";
 	}
 
 	private int DB const;
