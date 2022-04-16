@@ -9,6 +9,7 @@ public object TOrdersRecord {
 	public string Finished;
 	public int Id;
 	public string InstrumentCode;
+	public string LastModified;
 	public string OrderId;
 	public double Price;
 	public string Side;
@@ -41,7 +42,7 @@ public object TOrdersRecord {
 	}
 
 	public void insert() modify throws {
-		var query = "INSERT INTO orders ( `account_id`, `amount`, `created`, `filled_amount`, `finished`, `id`, `instrument_code`, `order_id`, `price`, `side`, `status_id`, `type` ) VALUES ( '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' )";
+		var query = "INSERT INTO orders ( `account_id`, `amount`, `created`, `filled_amount`, `finished`, `id`, `instrument_code`, `last_modified`, `order_id`, `price`, `side`, `status_id`, `type` ) VALUES ( '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', NULLIF('" + LastModified + "', ''), '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' )";
 
 		var error = mysql_query( DB, query );
 		if ( error ) {
@@ -50,7 +51,7 @@ public object TOrdersRecord {
 	}
 
 	public void insertOrUpdate() modify throws {
-		var query = "INSERT INTO orders ( `account_id`, `amount`, `created`, `filled_amount`, `finished`, `id`, `instrument_code`, `order_id`, `price`, `side`, `status_id`, `type` ) VALUES ( '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' ) ON DUPLICATE KEY UPDATE `account_id` = '" + AccountId + "', `amount` = '" + Amount + "', `created` = NULLIF('" + Created + "', ''), `filled_amount` = '" + FilledAmount + "', `finished` = NULLIF('" + Finished + "', ''), `instrument_code` = '" + InstrumentCode + "', `order_id` = '" + OrderId + "', `price` = '" + Price + "', `side` = '" + Side + "', `status_id` = '" + StatusId + "', `type` = '" + Type + "'";
+		var query = "INSERT INTO orders ( `account_id`, `amount`, `created`, `filled_amount`, `finished`, `id`, `instrument_code`, `last_modified`, `order_id`, `price`, `side`, `status_id`, `type` ) VALUES ( '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', NULLIF('" + LastModified + "', ''), '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' ) ON DUPLICATE KEY UPDATE `account_id` = '" + AccountId + "', `amount` = '" + Amount + "', `created` = NULLIF('" + Created + "', ''), `filled_amount` = '" + FilledAmount + "', `finished` = NULLIF('" + Finished + "', ''), `instrument_code` = '" + InstrumentCode + "', `last_modified` = NULLIF('" + LastModified + "', ''), `order_id` = '" + OrderId + "', `price` = '" + Price + "', `side` = '" + Side + "', `status_id` = '" + StatusId + "', `type` = '" + Type + "'";
 
 		var error = mysql_query( DB, query );
 		if ( error ) {
@@ -76,6 +77,7 @@ public object TOrdersRecord {
 		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
 		Id = cast<int>( mysql_get_field_value( result, "id" ) );
 		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
 		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
 		Price = cast<double>( mysql_get_field_value( result, "price" ) );
 		Side = cast<string>( mysql_get_field_value( result, "side" ) );
@@ -103,6 +105,7 @@ public object TOrdersRecord {
 		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
 		Id = cast<int>( mysql_get_field_value( result, "id" ) );
 		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
 		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
 		Price = cast<double>( mysql_get_field_value( result, "price" ) );
 		Side = cast<string>( mysql_get_field_value( result, "side" ) );
@@ -118,6 +121,7 @@ public object TOrdersRecord {
 		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
 		Id = cast<int>( mysql_get_field_value( result, "id" ) );
 		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
 		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
 		Price = cast<double>( mysql_get_field_value( result, "price" ) );
 		Side = cast<string>( mysql_get_field_value( result, "side" ) );
@@ -134,7 +138,7 @@ public object TOrdersRecord {
 	}
 
 	public string =operator( string ) const {
-		return "TOrdersRecord { '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' }";
+		return "TOrdersRecord { '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', NULLIF('" + LastModified + "', ''), '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' }";
 	}
 
 	private int DB const;

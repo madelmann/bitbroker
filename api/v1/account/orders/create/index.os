@@ -10,15 +10,13 @@ import libs.OrderEngine.OrderEngine;
 
 
 public void Process( int argc, string args ) modify throws {
+	API.VerifyAccount();
+
 	if ( getenv( "CONTENT_TYPE" ) != "application/json" ) {
 		throw "wrong content type";
 	}
 
-	API.VerifyAccount();
-
 	var requestStr = post( "REQUEST" );
-	//print( "Request: '" + requestStr + "'" );
-
 	if ( !requestStr ) {
 		throw "empty request";
 	}
@@ -39,11 +37,11 @@ public void Process( int argc, string args ) modify throws {
 		throw "type missing";
 	}
 
-	var account_id = mysql_real_escape_string( Database.Handle, get( "account_id" ) );
-	var amount = request[ "amount" ].asDouble();
+	var account_id      = API.retrieve( "account_id" );
+	var amount          = request[ "amount" ].asDouble();
 	var instrument_code = request[ "instrument_code" ].asString();
-	var side = request[ "side" ].asString();
-	var type = request[ "type" ].asString();
+	var side            = request[ "side" ].asString();
+	var type            = request[ "type" ].asString();
 
 	double price;
 	if ( type == "LIMIT" ) {

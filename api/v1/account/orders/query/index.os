@@ -49,7 +49,7 @@ private void retrieveAllOrders( string accountId ) {
 			Json.BeginObject();
 			Json.AddElement( "order_id", record.OrderId );
 			Json.AddElement( "account_id", record.AccountId );
-			Json.AddElement( "last_updated", record.Finished );
+			Json.AddElement( "last_updated", record.LastModified );
 			Json.AddElement( "price", record.Price );
 			Json.AddElement( "amount", record.Amount );
 			Json.AddElement( "filled_amount", record.FilledAmount );
@@ -100,7 +100,7 @@ private void retrieveSingleOrder( string accountId, string orderId ) {
 		Json.BeginObject( "order" );
 		Json.AddElement( "order_id", order.OrderId );
 		Json.AddElement( "account_id", order.AccountId );
-		Json.AddElement( "last_updated", order.Finished );
+		Json.AddElement( "last_updated", order.LastModified );
 		Json.AddElement( "price", order.Price );
 		Json.AddElement( "amount", order.Amount );
 		Json.AddElement( "filled_amount", order.FilledAmount );

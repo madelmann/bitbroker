@@ -30,7 +30,7 @@ private void GetAllCurrencies( string accountId ) throws {
 	Json.BeginArray( "balances" );
 	foreach ( TBalanceRecord record : balances ) {
 		Json.BeginObject();
-		//Json.AddElement( "account_id", record.AccountId );
+		Json.AddElement( "account_id", record.AccountId );
 		Json.AddElement( "currency_code", record.CurrencyCode );
 		Json.AddElement( "available", record.Available );
 		Json.AddElement( "locked", record.Locked );
@@ -47,7 +47,7 @@ private void GetSingleCurrency( string accountId, string currencyCode ) throws {
 	Json.AddElement( "account_id", accountId );
 	Json.BeginArray( "balances" );
 	Json.BeginObject();
-	//Json.AddElement( "account_id", record.AccountId );
+	Json.AddElement( "account_id", record.AccountId );
 	Json.AddElement( "currency_code", record.CurrencyCode );
 	Json.AddElement( "available", record.Available );
 	Json.AddElement( "locked", record.Locked );

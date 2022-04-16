@@ -165,13 +165,13 @@ public namespace OrderEngine {
     private string GetNextOrderId() modify {
         // TODO: generate a new order id, possibly from within the database
         srand( time() + rand() );
-        return cast<string>( strftime( "%Y-%m-%dT%H:%M:%S" ) ) + "-" + cast<string>( rand() );
+        return cast<string>( "Order-" + strftime( "%Y-%m-%dT%H:%M:%S" ) ) + "-" + cast<string>( rand() );
     }
 
     private string GetNextTradeId() modify {
-        // TODO: generate a new order id, possibly from within the database
+        // TODO: generate a new trade id, possibly from within the database
         srand( time() + rand() );
-        return cast<string>( strftime( "%Y-%m-%dT%H:%M:%S" ) ) + "-" + cast<string>( rand() );
+        return cast<string>( "Trade-" + strftime( "%Y-%m-%dT%H:%M:%S" ) ) + "-" + cast<string>( rand() );
     }
 
     private void ImmediateExecute( TOrdersRecord newOrder ) modify throws {
@@ -184,7 +184,7 @@ public namespace OrderEngine {
 
             // try to match the given order with orders from our order book
             foreach ( TOrdersRecord mo : makerOrders ) {
-                // whenever the price of a maker order is below or euqal to our new order we match them
+                // whenever the price of a maker order is below or equal to our new order we match them
                 if ( newOrder.Type == "MARKET" || mo.Price <= newOrder.Price ) {
                     MatchOrder( newOrder, mo );
 

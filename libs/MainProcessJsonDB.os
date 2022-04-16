@@ -9,6 +9,13 @@ import Utils;
 
 
 public void Main( int argc, string args ) modify {
+	// HTTP request header
+	//print( "== Request ==" );
+	//print( "ACCEPT: " + getenv( "ACCEPT" ) );
+	//print( "AUTHORIZATION: " + getenv( "AUTHORIZATION" ) );
+	//print( "CONTENT_LENGTH: " + getenv( "CONTENT_LENGTH" ) );
+	//print( "CONTENT_TYPE: " + getenv( "CONTENT_TYPE" ) );
+
 	try {
 		Utils.parseParameters();
 
@@ -25,6 +32,13 @@ public void Main( int argc, string args ) modify {
 		Json.AddElement( "message", e.what() );
 	}
 
-	print( Json.GetString() );
+	var content = Json.GetString();
+
+	// HTTP response header
+	//print( "== Response ==" );
+	//print( "CONTENT_TYPE: application/json" ) );
+	//print( "CONTENT_LENGTH: " + strlen( content ) ) );
+
+	print( content );
 }
 
