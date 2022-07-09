@@ -136,7 +136,7 @@ public object TUsersCollection implements ICollection { //<TUsersRecord> {
 	}
 
 	public Iterator<TUsersRecord> getIterator() const {
-		return new Iterator<TUsersRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TUsersRecord last() const {

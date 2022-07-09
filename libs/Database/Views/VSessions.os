@@ -113,7 +113,7 @@ public object VSessionsCollection implements ICollection /*<VSessionsRecord>*/ {
 	}
 
 	public Iterator<VSessionsRecord> getIterator() const {
-		return new Iterator<VSessionsRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public VSessionsRecord last() const {

@@ -100,7 +100,7 @@ public object TProfilesCollection implements ICollection /*<TProfilesRecord>*/ {
 	}
 
 	public Iterator<TProfilesRecord> getIterator() const {
-		return new Iterator<TProfilesRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TProfilesRecord last() const {

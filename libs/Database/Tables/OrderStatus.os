@@ -128,7 +128,7 @@ public object TOrderStatusCollection implements ICollection { //<TOrderStatusRec
 	}
 
 	public Iterator<TOrderStatusRecord> getIterator() const {
-		return new Iterator<TOrderStatusRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TOrderStatusRecord last() const {

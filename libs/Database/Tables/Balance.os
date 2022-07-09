@@ -140,7 +140,7 @@ public object TBalanceCollection implements ICollection { //<TBalanceRecord> {
 	}
 
 	public Iterator<TBalanceRecord> getIterator() const {
-		return new Iterator<TBalanceRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TBalanceRecord last() const {

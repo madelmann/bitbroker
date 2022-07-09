@@ -140,7 +140,7 @@ public object TMarketTickerCollection implements ICollection { //<TMarketTickerR
 	}
 
 	public Iterator<TMarketTickerRecord> getIterator() const {
-		return new Iterator<TMarketTickerRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TMarketTickerRecord last() const {

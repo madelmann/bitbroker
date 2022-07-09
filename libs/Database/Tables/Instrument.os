@@ -148,7 +148,7 @@ public object TInstrumentCollection implements ICollection { //<TInstrumentRecor
 	}
 
 	public Iterator<TInstrumentRecord> getIterator() const {
-		return new Iterator<TInstrumentRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TInstrumentRecord last() const {

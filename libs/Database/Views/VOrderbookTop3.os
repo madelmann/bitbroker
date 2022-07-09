@@ -137,7 +137,7 @@ public object VOrderbookTop3Collection implements ICollection /*<VOrderbookTop3R
 	}
 
 	public Iterator<VOrderbookTop3Record> getIterator() const {
-		return new Iterator<VOrderbookTop3Record>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public VOrderbookTop3Record last() const {

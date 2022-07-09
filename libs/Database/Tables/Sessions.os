@@ -132,7 +132,7 @@ public object TSessionsCollection implements ICollection { //<TSessionsRecord> {
 	}
 
 	public Iterator<TSessionsRecord> getIterator() const {
-		return new Iterator<TSessionsRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TSessionsRecord last() const {

@@ -168,7 +168,7 @@ public object TOrdersCollection implements ICollection { //<TOrdersRecord> {
 	}
 
 	public Iterator<TOrdersRecord> getIterator() const {
-		return new Iterator<TOrdersRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TOrdersRecord last() const {

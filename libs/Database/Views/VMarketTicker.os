@@ -109,7 +109,7 @@ public object VMarketTickerCollection implements ICollection /*<VMarketTickerRec
 	}
 
 	public Iterator<VMarketTickerRecord> getIterator() const {
-		return new Iterator<VMarketTickerRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public VMarketTickerRecord last() const {

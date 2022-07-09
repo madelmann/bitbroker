@@ -128,7 +128,7 @@ public object TCurrencyCollection implements ICollection { //<TCurrencyRecord> {
 	}
 
 	public Iterator<TCurrencyRecord> getIterator() const {
-		return new Iterator<TCurrencyRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TCurrencyRecord last() const {

@@ -152,7 +152,7 @@ public object TTradeCollection implements ICollection { //<TTradeRecord> {
 	}
 
 	public Iterator<TTradeRecord> getIterator() const {
-		return new Iterator<TTradeRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TTradeRecord last() const {

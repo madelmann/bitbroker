@@ -128,7 +128,7 @@ public object TAccountCollection implements ICollection { //<TAccountRecord> {
 	}
 
 	public Iterator<TAccountRecord> getIterator() const {
-		return new Iterator<TAccountRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public TAccountRecord last() const {

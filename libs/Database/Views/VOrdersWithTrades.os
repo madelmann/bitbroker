@@ -153,7 +153,7 @@ public object VOrdersWithTradesCollection implements ICollection /*<VOrdersWithT
 	}
 
 	public Iterator<VOrdersWithTradesRecord> getIterator() const {
-		return new Iterator<VOrdersWithTradesRecord>( cast<ICollection>( Collection ) );
+		return Collection.getIterator();
 	}
 
 	public VOrdersWithTradesRecord last() const {
