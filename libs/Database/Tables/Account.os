@@ -3,6 +3,7 @@ import System.Collections.Vector;
 
 public object TAccountRecord {
 	public string Created;
+	public string Deleted;
 	public string Id;
 	public string Source;
 
@@ -32,7 +33,7 @@ public object TAccountRecord {
 	}
 
 	public void insert() modify throws {
-		var query = "INSERT INTO account ( `created`, `id`, `source` ) VALUES ( NULLIF('" + Created + "', ''), '" + Id + "', '" + Source + "' )";
+		var query = "INSERT INTO account ( `created`, `deleted`, `id`, `source` ) VALUES ( NULLIF('" + Created + "', ''), NULLIF('" + Deleted + "', ''), '" + Id + "', '" + Source + "' )";
 
 		var error = mysql_query( DB, query );
 		if ( error ) {
@@ -41,7 +42,7 @@ public object TAccountRecord {
 	}
 
 	public void insertOrUpdate() modify throws {
-		var query = "INSERT INTO account ( `created`, `id`, `source` ) VALUES ( NULLIF('" + Created + "', ''), '" + Id + "', '" + Source + "' ) ON DUPLICATE KEY UPDATE `created` = NULLIF('" + Created + "', ''), `source` = '" + Source + "'";
+		var query = "INSERT INTO account ( `created`, `deleted`, `id`, `source` ) VALUES ( NULLIF('" + Created + "', ''), NULLIF('" + Deleted + "', ''), '" + Id + "', '" + Source + "' ) ON DUPLICATE KEY UPDATE `created` = NULLIF('" + Created + "', ''), `deleted` = NULLIF('" + Deleted + "', ''), `source` = '" + Source + "'";
 
 		var error = mysql_query( DB, query );
 		if ( error ) {
@@ -61,6 +62,7 @@ public object TAccountRecord {
 		}
 
 		Created = cast<string>( mysql_get_field_value( result, "created" ) );
+		Deleted = cast<string>( mysql_get_field_value( result, "deleted" ) );
 		Id = cast<string>( mysql_get_field_value( result, "id" ) );
 		Source = cast<string>( mysql_get_field_value( result, "source" ) );
 	}
@@ -79,12 +81,14 @@ public object TAccountRecord {
 		}
 
 		Created = cast<string>( mysql_get_field_value( result, "created" ) );
+		Deleted = cast<string>( mysql_get_field_value( result, "deleted" ) );
 		Id = cast<string>( mysql_get_field_value( result, "id" ) );
 		Source = cast<string>( mysql_get_field_value( result, "source" ) );
 	}
 
 	public void loadByResult( int result ) modify {
 		Created = cast<string>( mysql_get_field_value( result, "created" ) );
+		Deleted = cast<string>( mysql_get_field_value( result, "deleted" ) );
 		Id = cast<string>( mysql_get_field_value( result, "id" ) );
 		Source = cast<string>( mysql_get_field_value( result, "source" ) );
 	}
@@ -98,7 +102,7 @@ public object TAccountRecord {
 	}
 
 	public string =operator( string ) const {
-		return "TAccountRecord { NULLIF('" + Created + "', ''), '" + Id + "', '" + Source + "' }";
+		return "TAccountRecord { NULLIF('" + Created + "', ''), NULLIF('" + Deleted + "', ''), '" + Id + "', '" + Source + "' }";
 	}
 
 	private int DB const;
