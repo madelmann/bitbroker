@@ -3,19 +3,10 @@
 // library imports
 
 // project imports
-import libs.API;
-import libs.Config;
-import libs.Database;
-import libs.OrderEngine;
-//import libs.Plugins.ExecutePlugin;
-import libs.Plugins.IPlugin;
-//import libs.Plugins.RenderPugin;
-//import libs.Plugins.RawPlugin;
-import libs.Session;
-import libs.Utils;
+import libs;
 
 
 public void Main( int argc, string args ) {
-    print( "No syntax error found." );
+	print( "No syntax error found." );
 }
 

@@ -3,15 +3,30 @@
 // Library imports
 
 // Project imports
+import libs.API.Utils;
 import libs.Database.Tables.Account;
 import libs.MainProcessJsonDB;
 
 
 public void Process( int argc, string args ) throws {
+	var accountId = API.retrieve( "account_id", "" );
+
+	Json.BeginArray( "accounts" );
+
+	if ( accountId ) {
+		querySingleAccount( accountId );
+	}
+	else {
+		queryAllAccounts();
+	}
+
+	Json.EndArray();
+}
+
+private void queryAllAccounts() const throws {
 	var collection = new TAccountCollection( Database.Handle );
 	collection.loadByQuery( "SELECT * FROM account ORDER BY created ASC" );
 
-	Json.BeginArray( "accounts" );
 	foreach ( TAccountRecord record : collection ) {
 		Json.BeginObject();
 		Json.AddElement( "account_id", record.Id );
@@ -19,6 +34,18 @@ public void Process( int argc, string args ) throws {
 		Json.AddElement( "source", record.Source );
 		Json.EndObject();
 	}
-	Json.EndArray();
+}
+
+private void querySingleAccount( string accountId ) const throws {
+	var collection = new TAccountCollection( Database.Handle );
+	collection.loadByQuery( "SELECT * FROM account WHERE id = '" + accountId + "'" );
+
+	foreach ( TAccountRecord record : collection ) {
+		Json.BeginObject();
+		Json.AddElement( "account_id", record.Id );
+		Json.AddElement( "time", record.Created );
+		Json.AddElement( "source", record.Source );
+		Json.EndObject();
+	}
 }
 

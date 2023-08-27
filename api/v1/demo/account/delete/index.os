@@ -3,8 +3,8 @@
 // Library imports
 
 // Project imports
+import libs.Accounts.AccountUtils;
 import libs.API.Utils;
-import libs.Database.Utils;
 import libs.MainExecuteDB;
 
 
@@ -13,8 +13,6 @@ public bool Execute( int argc, string args ) throws {
 
 	var accountId = API.retrieve( "account_id" );
 
-	Database.Execute( "DELETE FROM account WHERE id = '" + accountId + "'" );
-
-	return true;
+	return Accounts.Delete( accountId );
 }
 
