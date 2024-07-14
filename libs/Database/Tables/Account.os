@@ -2,10 +2,10 @@
 import System.Collections.Vector;
 
 public object TAccountRecord {
-	public string Created;
-	public string Deleted;
-	public string Id;
-	public string Source;
+   public string Created;
+   public string Deleted;
+   public string Id;
+   public string Source;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -32,21 +32,54 @@ public object TAccountRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO account ( `created`, `deleted`, `id`, `source` ) VALUES ( NULLIF('" + Created + "', ''), NULLIF('" + Deleted + "', ''), '" + Id + "', '" + Source + "' )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO account ( `created`, `deleted`, `id`, `source` ) VALUES ( NULLIF('" + Created + "', ''), NULLIF('" + Deleted + "', ''), '" + Id + "', '" + Source + "' )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO account ( `created`, `deleted`, `id`, `source` ) VALUES ( NULLIF('" + Created + "', ''), NULLIF('" + Deleted + "', ''), '" + Id + "', '" + Source + "' ) ON DUPLICATE KEY UPDATE `created` = NULLIF('" + Created + "', ''), `deleted` = NULLIF('" + Deleted + "', ''), `source` = '" + Source + "'";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -61,10 +94,10 @@ public object TAccountRecord {
             throw "no result found";
         }
 
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		Deleted = cast<string>( mysql_get_field_value( result, "deleted" ) );
-		Id = cast<string>( mysql_get_field_value( result, "id" ) );
-		Source = cast<string>( mysql_get_field_value( result, "source" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       Deleted = cast<string>( mysql_get_field_value( result, "deleted" ) );
+       Id = cast<string>( mysql_get_field_value( result, "id" ) );
+       Source = cast<string>( mysql_get_field_value( result, "source" ) );
     }
 
     public void loadByPrimaryKey( string id ) modify throws {
@@ -80,21 +113,30 @@ public object TAccountRecord {
             throw "no result found";
         }
 
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		Deleted = cast<string>( mysql_get_field_value( result, "deleted" ) );
-		Id = cast<string>( mysql_get_field_value( result, "id" ) );
-		Source = cast<string>( mysql_get_field_value( result, "source" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       Deleted = cast<string>( mysql_get_field_value( result, "deleted" ) );
+       Id = cast<string>( mysql_get_field_value( result, "id" ) );
+       Source = cast<string>( mysql_get_field_value( result, "source" ) );
     }
 
     public void loadByResult( int result ) modify {
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		Deleted = cast<string>( mysql_get_field_value( result, "deleted" ) );
-		Id = cast<string>( mysql_get_field_value( result, "id" ) );
-		Source = cast<string>( mysql_get_field_value( result, "source" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       Deleted = cast<string>( mysql_get_field_value( result, "deleted" ) );
+       Id = cast<string>( mysql_get_field_value( result, "id" ) );
+       Source = cast<string>( mysql_get_field_value( result, "source" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE account SET `created` = NULLIF('" + Created + "', ''), `deleted` = NULLIF('" + Deleted + "', ''), `source` = '" + Source + "' WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TAccountRecord other const ) const {
@@ -103,6 +145,26 @@ public object TAccountRecord {
 
     public string =operator( string ) const {
         return "TAccountRecord { NULLIF('" + Created + "', ''), NULLIF('" + Deleted + "', ''), '" + Id + "', '" + Source + "' }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;

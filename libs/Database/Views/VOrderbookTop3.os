@@ -2,19 +2,19 @@
 import System.Collections.Vector;
 
 public object VOrderbookTop3Record {
-	public string AccountId;
-	public double Amount;
-	public string Created;
-	public double FilledAmount;
-	public string Finished;
-	public int Id;
-	public string InstrumentCode;
-	public string LastModified;
-	public string OrderId;
-	public double Price;
-	public string Side;
-	public int StatusId;
-	public string Type;
+   public string AccountId;
+   public double Amount;
+   public string Created;
+   public double FilledAmount;
+   public string Finished;
+   public int Id;
+   public string InstrumentCode;
+   public string LastModified;
+   public string OrderId;
+   public double Price;
+   public string Side;
+   public int StatusId;
+   public string Type;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -43,19 +43,19 @@ public object VOrderbookTop3Record {
             throw "no result found";
         }
 
-		AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
-		Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
-		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
-		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
-		Price = cast<double>( mysql_get_field_value( result, "price" ) );
-		Side = cast<string>( mysql_get_field_value( result, "side" ) );
-		StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
-		Type = cast<string>( mysql_get_field_value( result, "type" ) );
+       AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
+       Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
+       Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
+       OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
+       Price = cast<double>( mysql_get_field_value( result, "price" ) );
+       Side = cast<string>( mysql_get_field_value( result, "side" ) );
+       StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
+       Type = cast<string>( mysql_get_field_value( result, "type" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -71,35 +71,35 @@ public object VOrderbookTop3Record {
             throw "no result found";
         }
 
-		AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
-		Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
-		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
-		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
-		Price = cast<double>( mysql_get_field_value( result, "price" ) );
-		Side = cast<string>( mysql_get_field_value( result, "side" ) );
-		StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
-		Type = cast<string>( mysql_get_field_value( result, "type" ) );
+       AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
+       Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
+       Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
+       OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
+       Price = cast<double>( mysql_get_field_value( result, "price" ) );
+       Side = cast<string>( mysql_get_field_value( result, "side" ) );
+       StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
+       Type = cast<string>( mysql_get_field_value( result, "type" ) );
     }
 
     public void loadByResult( int result ) modify {
-		AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
-		Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
-		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
-		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
-		Price = cast<double>( mysql_get_field_value( result, "price" ) );
-		Side = cast<string>( mysql_get_field_value( result, "side" ) );
-		StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
-		Type = cast<string>( mysql_get_field_value( result, "type" ) );
+       AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
+       Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
+       Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
+       OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
+       Price = cast<double>( mysql_get_field_value( result, "price" ) );
+       Side = cast<string>( mysql_get_field_value( result, "side" ) );
+       StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
+       Type = cast<string>( mysql_get_field_value( result, "type" ) );
     }
 
     public bool operator==( VOrderbookTop3Record other const ) const {

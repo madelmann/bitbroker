@@ -2,12 +2,12 @@
 import System.Collections.Vector;
 
 public object TMarketTickerRecord {
-	public double BestAsk;
-	public double BestBid;
-	public int Id;
-	public string InstrumentCode;
-	public double LastPrice;
-	public string Time;
+   public double BestAsk;
+   public double BestBid;
+   public int Id;
+   public string InstrumentCode;
+   public double LastPrice;
+   public string Time;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -34,21 +34,54 @@ public object TMarketTickerRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO market_ticker ( `best_ask`, `best_bid`, `id`, `instrument_code`, `last_price`, `time` ) VALUES ( '" + BestAsk + "', '" + BestBid + "', '" + Id + "', '" + InstrumentCode + "', '" + LastPrice + "', NULLIF('" + Time + "', '') )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO market_ticker ( `best_ask`, `best_bid`, `id`, `instrument_code`, `last_price`, `time` ) VALUES ( '" + BestAsk + "', '" + BestBid + "', '" + Id + "', '" + InstrumentCode + "', '" + LastPrice + "', NULLIF('" + Time + "', '') )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO market_ticker ( `best_ask`, `best_bid`, `id`, `instrument_code`, `last_price`, `time` ) VALUES ( '" + BestAsk + "', '" + BestBid + "', '" + Id + "', '" + InstrumentCode + "', '" + LastPrice + "', NULLIF('" + Time + "', '') ) ON DUPLICATE KEY UPDATE `best_ask` = '" + BestAsk + "', `best_bid` = '" + BestBid + "', `instrument_code` = '" + InstrumentCode + "', `last_price` = '" + LastPrice + "', `time` = NULLIF('" + Time + "', '')";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -63,12 +96,12 @@ public object TMarketTickerRecord {
             throw "no result found";
         }
 
-		BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
-		BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
-		Time = cast<string>( mysql_get_field_value( result, "time" ) );
+       BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
+       BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
+       Time = cast<string>( mysql_get_field_value( result, "time" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -84,25 +117,34 @@ public object TMarketTickerRecord {
             throw "no result found";
         }
 
-		BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
-		BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
-		Time = cast<string>( mysql_get_field_value( result, "time" ) );
+       BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
+       BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
+       Time = cast<string>( mysql_get_field_value( result, "time" ) );
     }
 
     public void loadByResult( int result ) modify {
-		BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
-		BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
-		Time = cast<string>( mysql_get_field_value( result, "time" ) );
+       BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
+       BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
+       Time = cast<string>( mysql_get_field_value( result, "time" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE market_ticker SET `best_ask` = '" + BestAsk + "', `best_bid` = '" + BestBid + "', `instrument_code` = '" + InstrumentCode + "', `last_price` = '" + LastPrice + "', `time` = NULLIF('" + Time + "', '') WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TMarketTickerRecord other const ) const {
@@ -111,6 +153,26 @@ public object TMarketTickerRecord {
 
     public string =operator( string ) const {
         return "TMarketTickerRecord { '" + BestAsk + "', '" + BestBid + "', '" + Id + "', '" + InstrumentCode + "', '" + LastPrice + "', NULLIF('" + Time + "', '') }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;

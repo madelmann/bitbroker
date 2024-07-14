@@ -2,12 +2,12 @@
 import System.Collections.Vector;
 
 public object TBalanceRecord {
-	public string AccountId;
-	public double Available;
-	public string CurrencyCode;
-	public int Id;
-	public double Locked;
-	public string Time;
+   public string AccountId;
+   public double Available;
+   public string CurrencyCode;
+   public int Id;
+   public double Locked;
+   public string Time;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -34,21 +34,54 @@ public object TBalanceRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO balance ( `account_id`, `available`, `currency_code`, `id`, `locked`, `time` ) VALUES ( '" + AccountId + "', '" + Available + "', '" + CurrencyCode + "', '" + Id + "', '" + Locked + "', NULLIF('" + Time + "', '') )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO balance ( `account_id`, `available`, `currency_code`, `id`, `locked`, `time` ) VALUES ( '" + AccountId + "', '" + Available + "', '" + CurrencyCode + "', '" + Id + "', '" + Locked + "', NULLIF('" + Time + "', '') )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO balance ( `account_id`, `available`, `currency_code`, `id`, `locked`, `time` ) VALUES ( '" + AccountId + "', '" + Available + "', '" + CurrencyCode + "', '" + Id + "', '" + Locked + "', NULLIF('" + Time + "', '') ) ON DUPLICATE KEY UPDATE `account_id` = '" + AccountId + "', `available` = '" + Available + "', `currency_code` = '" + CurrencyCode + "', `locked` = '" + Locked + "', `time` = NULLIF('" + Time + "', '')";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -63,12 +96,12 @@ public object TBalanceRecord {
             throw "no result found";
         }
 
-		AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
-		Available = cast<double>( mysql_get_field_value( result, "available" ) );
-		CurrencyCode = cast<string>( mysql_get_field_value( result, "currency_code" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Locked = cast<double>( mysql_get_field_value( result, "locked" ) );
-		Time = cast<string>( mysql_get_field_value( result, "time" ) );
+       AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
+       Available = cast<double>( mysql_get_field_value( result, "available" ) );
+       CurrencyCode = cast<string>( mysql_get_field_value( result, "currency_code" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Locked = cast<double>( mysql_get_field_value( result, "locked" ) );
+       Time = cast<string>( mysql_get_field_value( result, "time" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -84,25 +117,34 @@ public object TBalanceRecord {
             throw "no result found";
         }
 
-		AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
-		Available = cast<double>( mysql_get_field_value( result, "available" ) );
-		CurrencyCode = cast<string>( mysql_get_field_value( result, "currency_code" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Locked = cast<double>( mysql_get_field_value( result, "locked" ) );
-		Time = cast<string>( mysql_get_field_value( result, "time" ) );
+       AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
+       Available = cast<double>( mysql_get_field_value( result, "available" ) );
+       CurrencyCode = cast<string>( mysql_get_field_value( result, "currency_code" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Locked = cast<double>( mysql_get_field_value( result, "locked" ) );
+       Time = cast<string>( mysql_get_field_value( result, "time" ) );
     }
 
     public void loadByResult( int result ) modify {
-		AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
-		Available = cast<double>( mysql_get_field_value( result, "available" ) );
-		CurrencyCode = cast<string>( mysql_get_field_value( result, "currency_code" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Locked = cast<double>( mysql_get_field_value( result, "locked" ) );
-		Time = cast<string>( mysql_get_field_value( result, "time" ) );
+       AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
+       Available = cast<double>( mysql_get_field_value( result, "available" ) );
+       CurrencyCode = cast<string>( mysql_get_field_value( result, "currency_code" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Locked = cast<double>( mysql_get_field_value( result, "locked" ) );
+       Time = cast<string>( mysql_get_field_value( result, "time" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE balance SET `account_id` = '" + AccountId + "', `available` = '" + Available + "', `currency_code` = '" + CurrencyCode + "', `locked` = '" + Locked + "', `time` = NULLIF('" + Time + "', '') WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TBalanceRecord other const ) const {
@@ -111,6 +153,26 @@ public object TBalanceRecord {
 
     public string =operator( string ) const {
         return "TBalanceRecord { '" + AccountId + "', '" + Available + "', '" + CurrencyCode + "', '" + Id + "', '" + Locked + "', NULLIF('" + Time + "', '') }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;

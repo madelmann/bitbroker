@@ -2,12 +2,12 @@
 import System.Collections.Vector;
 
 public object VMarketTickerRecord {
-	public double BestAsk;
-	public double BestBid;
-	public int Id;
-	public string InstrumentCode;
-	public double LastPrice;
-	public string Time;
+   public double BestAsk;
+   public double BestBid;
+   public int Id;
+   public string InstrumentCode;
+   public double LastPrice;
+   public string Time;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -36,12 +36,12 @@ public object VMarketTickerRecord {
             throw "no result found";
         }
 
-		BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
-		BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
-		Time = cast<string>( mysql_get_field_value( result, "time" ) );
+       BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
+       BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
+       Time = cast<string>( mysql_get_field_value( result, "time" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -57,21 +57,21 @@ public object VMarketTickerRecord {
             throw "no result found";
         }
 
-		BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
-		BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
-		Time = cast<string>( mysql_get_field_value( result, "time" ) );
+       BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
+       BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
+       Time = cast<string>( mysql_get_field_value( result, "time" ) );
     }
 
     public void loadByResult( int result ) modify {
-		BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
-		BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
-		Time = cast<string>( mysql_get_field_value( result, "time" ) );
+       BestAsk = cast<double>( mysql_get_field_value( result, "best_ask" ) );
+       BestBid = cast<double>( mysql_get_field_value( result, "best_bid" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastPrice = cast<double>( mysql_get_field_value( result, "last_price" ) );
+       Time = cast<string>( mysql_get_field_value( result, "time" ) );
     }
 
     public bool operator==( VMarketTickerRecord other const ) const {

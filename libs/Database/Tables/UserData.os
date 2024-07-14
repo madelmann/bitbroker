@@ -2,11 +2,11 @@
 import System.Collections.Vector;
 
 public object TUserDataRecord {
-	public string Email;
-	public int Id;
-	public string Identifier;
-	public string Prename;
-	public string Surname;
+   public string Email;
+   public int Id;
+   public string Identifier;
+   public string Prename;
+   public string Surname;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -33,21 +33,54 @@ public object TUserDataRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO user_data ( `email`, `id`, `identifier`, `prename`, `surname` ) VALUES ( '" + Email + "', '" + Id + "', '" + Identifier + "', '" + Prename + "', '" + Surname + "' )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO user_data ( `email`, `id`, `identifier`, `prename`, `surname` ) VALUES ( '" + Email + "', '" + Id + "', '" + Identifier + "', '" + Prename + "', '" + Surname + "' )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO user_data ( `email`, `id`, `identifier`, `prename`, `surname` ) VALUES ( '" + Email + "', '" + Id + "', '" + Identifier + "', '" + Prename + "', '" + Surname + "' ) ON DUPLICATE KEY UPDATE `email` = '" + Email + "', `identifier` = '" + Identifier + "', `prename` = '" + Prename + "', `surname` = '" + Surname + "'";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -62,11 +95,11 @@ public object TUserDataRecord {
             throw "no result found";
         }
 
-		Email = cast<string>( mysql_get_field_value( result, "email" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		Prename = cast<string>( mysql_get_field_value( result, "prename" ) );
-		Surname = cast<string>( mysql_get_field_value( result, "surname" ) );
+       Email = cast<string>( mysql_get_field_value( result, "email" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       Prename = cast<string>( mysql_get_field_value( result, "prename" ) );
+       Surname = cast<string>( mysql_get_field_value( result, "surname" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -82,23 +115,32 @@ public object TUserDataRecord {
             throw "no result found";
         }
 
-		Email = cast<string>( mysql_get_field_value( result, "email" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		Prename = cast<string>( mysql_get_field_value( result, "prename" ) );
-		Surname = cast<string>( mysql_get_field_value( result, "surname" ) );
+       Email = cast<string>( mysql_get_field_value( result, "email" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       Prename = cast<string>( mysql_get_field_value( result, "prename" ) );
+       Surname = cast<string>( mysql_get_field_value( result, "surname" ) );
     }
 
     public void loadByResult( int result ) modify {
-		Email = cast<string>( mysql_get_field_value( result, "email" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		Prename = cast<string>( mysql_get_field_value( result, "prename" ) );
-		Surname = cast<string>( mysql_get_field_value( result, "surname" ) );
+       Email = cast<string>( mysql_get_field_value( result, "email" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       Prename = cast<string>( mysql_get_field_value( result, "prename" ) );
+       Surname = cast<string>( mysql_get_field_value( result, "surname" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE user_data SET `email` = '" + Email + "', `identifier` = '" + Identifier + "', `prename` = '" + Prename + "', `surname` = '" + Surname + "' WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TUserDataRecord other const ) const {
@@ -107,6 +149,26 @@ public object TUserDataRecord {
 
     public string =operator( string ) const {
         return "TUserDataRecord { '" + Email + "', '" + Id + "', '" + Identifier + "', '" + Prename + "', '" + Surname + "' }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;

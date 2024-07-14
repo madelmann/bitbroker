@@ -2,19 +2,19 @@
 import System.Collections.Vector;
 
 public object TOrdersRecord {
-	public string AccountId;
-	public double Amount;
-	public string Created;
-	public double FilledAmount;
-	public string Finished;
-	public int Id;
-	public string InstrumentCode;
-	public string LastModified;
-	public string OrderId;
-	public double Price;
-	public string Side;
-	public int StatusId;
-	public string Type;
+   public string AccountId;
+   public double Amount;
+   public string Created;
+   public double FilledAmount;
+   public string Finished;
+   public int Id;
+   public string InstrumentCode;
+   public string LastModified;
+   public string OrderId;
+   public double Price;
+   public string Side;
+   public int StatusId;
+   public string Type;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -41,21 +41,54 @@ public object TOrdersRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO orders ( `account_id`, `amount`, `created`, `filled_amount`, `finished`, `id`, `instrument_code`, `last_modified`, `order_id`, `price`, `side`, `status_id`, `type` ) VALUES ( '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', NULLIF('" + LastModified + "', ''), '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO orders ( `account_id`, `amount`, `created`, `filled_amount`, `finished`, `id`, `instrument_code`, `last_modified`, `order_id`, `price`, `side`, `status_id`, `type` ) VALUES ( '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', NULLIF('" + LastModified + "', ''), '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO orders ( `account_id`, `amount`, `created`, `filled_amount`, `finished`, `id`, `instrument_code`, `last_modified`, `order_id`, `price`, `side`, `status_id`, `type` ) VALUES ( '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', NULLIF('" + LastModified + "', ''), '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' ) ON DUPLICATE KEY UPDATE `account_id` = '" + AccountId + "', `amount` = '" + Amount + "', `created` = NULLIF('" + Created + "', ''), `filled_amount` = '" + FilledAmount + "', `finished` = NULLIF('" + Finished + "', ''), `instrument_code` = '" + InstrumentCode + "', `last_modified` = NULLIF('" + LastModified + "', ''), `order_id` = '" + OrderId + "', `price` = '" + Price + "', `side` = '" + Side + "', `status_id` = '" + StatusId + "', `type` = '" + Type + "'";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -70,19 +103,19 @@ public object TOrdersRecord {
             throw "no result found";
         }
 
-		AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
-		Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
-		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
-		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
-		Price = cast<double>( mysql_get_field_value( result, "price" ) );
-		Side = cast<string>( mysql_get_field_value( result, "side" ) );
-		StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
-		Type = cast<string>( mysql_get_field_value( result, "type" ) );
+       AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
+       Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
+       Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
+       OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
+       Price = cast<double>( mysql_get_field_value( result, "price" ) );
+       Side = cast<string>( mysql_get_field_value( result, "side" ) );
+       StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
+       Type = cast<string>( mysql_get_field_value( result, "type" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -98,39 +131,48 @@ public object TOrdersRecord {
             throw "no result found";
         }
 
-		AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
-		Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
-		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
-		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
-		Price = cast<double>( mysql_get_field_value( result, "price" ) );
-		Side = cast<string>( mysql_get_field_value( result, "side" ) );
-		StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
-		Type = cast<string>( mysql_get_field_value( result, "type" ) );
+       AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
+       Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
+       Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
+       OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
+       Price = cast<double>( mysql_get_field_value( result, "price" ) );
+       Side = cast<string>( mysql_get_field_value( result, "side" ) );
+       StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
+       Type = cast<string>( mysql_get_field_value( result, "type" ) );
     }
 
     public void loadByResult( int result ) modify {
-		AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
-		Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
-		Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
-		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
-		OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
-		Price = cast<double>( mysql_get_field_value( result, "price" ) );
-		Side = cast<string>( mysql_get_field_value( result, "side" ) );
-		StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
-		Type = cast<string>( mysql_get_field_value( result, "type" ) );
+       AccountId = cast<string>( mysql_get_field_value( result, "account_id" ) );
+       Amount = cast<double>( mysql_get_field_value( result, "amount" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       FilledAmount = cast<double>( mysql_get_field_value( result, "filled_amount" ) );
+       Finished = cast<string>( mysql_get_field_value( result, "finished" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       InstrumentCode = cast<string>( mysql_get_field_value( result, "instrument_code" ) );
+       LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
+       OrderId = cast<string>( mysql_get_field_value( result, "order_id" ) );
+       Price = cast<double>( mysql_get_field_value( result, "price" ) );
+       Side = cast<string>( mysql_get_field_value( result, "side" ) );
+       StatusId = cast<int>( mysql_get_field_value( result, "status_id" ) );
+       Type = cast<string>( mysql_get_field_value( result, "type" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE orders SET `account_id` = '" + AccountId + "', `amount` = '" + Amount + "', `created` = NULLIF('" + Created + "', ''), `filled_amount` = '" + FilledAmount + "', `finished` = NULLIF('" + Finished + "', ''), `instrument_code` = '" + InstrumentCode + "', `last_modified` = NULLIF('" + LastModified + "', ''), `order_id` = '" + OrderId + "', `price` = '" + Price + "', `side` = '" + Side + "', `status_id` = '" + StatusId + "', `type` = '" + Type + "' WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TOrdersRecord other const ) const {
@@ -139,6 +181,26 @@ public object TOrdersRecord {
 
     public string =operator( string ) const {
         return "TOrdersRecord { '" + AccountId + "', '" + Amount + "', NULLIF('" + Created + "', ''), '" + FilledAmount + "', NULLIF('" + Finished + "', ''), '" + Id + "', '" + InstrumentCode + "', NULLIF('" + LastModified + "', ''), '" + OrderId + "', '" + Price + "', '" + Side + "', '" + StatusId + "', '" + Type + "' }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;

@@ -2,10 +2,10 @@
 import System.Collections.Vector;
 
 public object TSessionsRecord {
-	public string Created;
-	public string Expires;
-	public string Id;
-	public string Identifier;
+   public string Created;
+   public string Expires;
+   public string Id;
+   public string Identifier;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -32,21 +32,54 @@ public object TSessionsRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO sessions ( `created`, `expires`, `id`, `identifier` ) VALUES ( NULLIF('" + Created + "', ''), NULLIF('" + Expires + "', ''), '" + Id + "', '" + Identifier + "' )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO sessions ( `created`, `expires`, `id`, `identifier` ) VALUES ( NULLIF('" + Created + "', ''), NULLIF('" + Expires + "', ''), '" + Id + "', '" + Identifier + "' )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO sessions ( `created`, `expires`, `id`, `identifier` ) VALUES ( NULLIF('" + Created + "', ''), NULLIF('" + Expires + "', ''), '" + Id + "', '" + Identifier + "' ) ON DUPLICATE KEY UPDATE `created` = NULLIF('" + Created + "', ''), `expires` = NULLIF('" + Expires + "', ''), `identifier` = '" + Identifier + "'";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -61,10 +94,10 @@ public object TSessionsRecord {
             throw "no result found";
         }
 
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
-		Id = cast<string>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
+       Id = cast<string>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
     }
 
     public void loadByPrimaryKey( string id ) modify throws {
@@ -80,21 +113,30 @@ public object TSessionsRecord {
             throw "no result found";
         }
 
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
-		Id = cast<string>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
+       Id = cast<string>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
     }
 
     public void loadByResult( int result ) modify {
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
-		Id = cast<string>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
+       Id = cast<string>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE sessions SET `created` = NULLIF('" + Created + "', ''), `expires` = NULLIF('" + Expires + "', ''), `identifier` = '" + Identifier + "' WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TSessionsRecord other const ) const {
@@ -103,6 +145,26 @@ public object TSessionsRecord {
 
     public string =operator( string ) const {
         return "TSessionsRecord { NULLIF('" + Created + "', ''), NULLIF('" + Expires + "', ''), '" + Id + "', '" + Identifier + "' }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;

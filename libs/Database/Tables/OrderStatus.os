@@ -2,9 +2,9 @@
 import System.Collections.Vector;
 
 public object TOrderStatusRecord {
-	public string Description;
-	public int Id;
-	public string Token;
+   public string Description;
+   public int Id;
+   public string Token;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -31,21 +31,54 @@ public object TOrderStatusRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO order_status ( `description`, `id`, `token` ) VALUES ( '" + Description + "', '" + Id + "', '" + Token + "' )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO order_status ( `description`, `id`, `token` ) VALUES ( '" + Description + "', '" + Id + "', '" + Token + "' )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO order_status ( `description`, `id`, `token` ) VALUES ( '" + Description + "', '" + Id + "', '" + Token + "' ) ON DUPLICATE KEY UPDATE `description` = '" + Description + "', `token` = '" + Token + "'";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -60,9 +93,9 @@ public object TOrderStatusRecord {
             throw "no result found";
         }
 
-		Description = cast<string>( mysql_get_field_value( result, "description" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Token = cast<string>( mysql_get_field_value( result, "token" ) );
+       Description = cast<string>( mysql_get_field_value( result, "description" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Token = cast<string>( mysql_get_field_value( result, "token" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -78,19 +111,28 @@ public object TOrderStatusRecord {
             throw "no result found";
         }
 
-		Description = cast<string>( mysql_get_field_value( result, "description" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Token = cast<string>( mysql_get_field_value( result, "token" ) );
+       Description = cast<string>( mysql_get_field_value( result, "description" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Token = cast<string>( mysql_get_field_value( result, "token" ) );
     }
 
     public void loadByResult( int result ) modify {
-		Description = cast<string>( mysql_get_field_value( result, "description" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Token = cast<string>( mysql_get_field_value( result, "token" ) );
+       Description = cast<string>( mysql_get_field_value( result, "description" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Token = cast<string>( mysql_get_field_value( result, "token" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE order_status SET `description` = '" + Description + "', `token` = '" + Token + "' WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TOrderStatusRecord other const ) const {
@@ -99,6 +141,26 @@ public object TOrderStatusRecord {
 
     public string =operator( string ) const {
         return "TOrderStatusRecord { '" + Description + "', '" + Id + "', '" + Token + "' }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;

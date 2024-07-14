@@ -2,13 +2,13 @@
 import System.Collections.Vector;
 
 public object VSessionsRecord {
-	public string Created;
-	public int CreateUsers;
-	public int DeleteUsers;
-	public string Expires;
-	public string Id;
-	public string Identifier;
-	public int UpdateUsers;
+   public string Created;
+   public int CreateUsers;
+   public int DeleteUsers;
+   public string Expires;
+   public string Id;
+   public string Identifier;
+   public int UpdateUsers;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -37,13 +37,13 @@ public object VSessionsRecord {
             throw "no result found";
         }
 
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
-		DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
-		Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
-		Id = cast<string>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
+       DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
+       Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
+       Id = cast<string>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
     }
 
     public void loadByPrimaryKey( string id ) modify throws {
@@ -59,23 +59,23 @@ public object VSessionsRecord {
             throw "no result found";
         }
 
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
-		DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
-		Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
-		Id = cast<string>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
+       DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
+       Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
+       Id = cast<string>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
     }
 
     public void loadByResult( int result ) modify {
-		Created = cast<string>( mysql_get_field_value( result, "created" ) );
-		CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
-		DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
-		Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
-		Id = cast<string>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
+       Created = cast<string>( mysql_get_field_value( result, "created" ) );
+       CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
+       DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
+       Expires = cast<string>( mysql_get_field_value( result, "expires" ) );
+       Id = cast<string>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
     }
 
     public bool operator==( VSessionsRecord other const ) const {

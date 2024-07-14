@@ -2,9 +2,9 @@
 import System.Collections.Vector;
 
 public object TCurrencyRecord {
-	public string Code;
-	public int Id;
-	public int Precision;
+   public string Code;
+   public int Id;
+   public int Precision;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -31,21 +31,54 @@ public object TCurrencyRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO currency ( `code`, `id`, `precision` ) VALUES ( '" + Code + "', '" + Id + "', '" + Precision + "' )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO currency ( `code`, `id`, `precision` ) VALUES ( '" + Code + "', '" + Id + "', '" + Precision + "' )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO currency ( `code`, `id`, `precision` ) VALUES ( '" + Code + "', '" + Id + "', '" + Precision + "' ) ON DUPLICATE KEY UPDATE `code` = '" + Code + "', `precision` = '" + Precision + "'";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -60,9 +93,9 @@ public object TCurrencyRecord {
             throw "no result found";
         }
 
-		Code = cast<string>( mysql_get_field_value( result, "code" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Precision = cast<int>( mysql_get_field_value( result, "precision" ) );
+       Code = cast<string>( mysql_get_field_value( result, "code" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Precision = cast<int>( mysql_get_field_value( result, "precision" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -78,19 +111,28 @@ public object TCurrencyRecord {
             throw "no result found";
         }
 
-		Code = cast<string>( mysql_get_field_value( result, "code" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Precision = cast<int>( mysql_get_field_value( result, "precision" ) );
+       Code = cast<string>( mysql_get_field_value( result, "code" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Precision = cast<int>( mysql_get_field_value( result, "precision" ) );
     }
 
     public void loadByResult( int result ) modify {
-		Code = cast<string>( mysql_get_field_value( result, "code" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Precision = cast<int>( mysql_get_field_value( result, "precision" ) );
+       Code = cast<string>( mysql_get_field_value( result, "code" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Precision = cast<int>( mysql_get_field_value( result, "precision" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE currency SET `code` = '" + Code + "', `precision` = '" + Precision + "' WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TCurrencyRecord other const ) const {
@@ -99,6 +141,26 @@ public object TCurrencyRecord {
 
     public string =operator( string ) const {
         return "TCurrencyRecord { '" + Code + "', '" + Id + "', '" + Precision + "' }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;

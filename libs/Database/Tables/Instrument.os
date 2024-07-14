@@ -2,14 +2,14 @@
 import System.Collections.Vector;
 
 public object TInstrumentRecord {
-	public int AmountPrecision;
-	public string Base;
-	public string Code;
-	public int Id;
-	public int MarketPrecision;
-	public double MinSize;
-	public string Quote;
-	public string State;
+   public int AmountPrecision;
+   public string Base;
+   public string Code;
+   public int Id;
+   public int MarketPrecision;
+   public double MinSize;
+   public string Quote;
+   public string State;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -36,21 +36,54 @@ public object TInstrumentRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO instrument ( `amount_precision`, `base`, `code`, `id`, `market_precision`, `min_size`, `quote`, `state` ) VALUES ( '" + AmountPrecision + "', '" + Base + "', '" + Code + "', '" + Id + "', '" + MarketPrecision + "', '" + MinSize + "', '" + Quote + "', '" + State + "' )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO instrument ( `amount_precision`, `base`, `code`, `id`, `market_precision`, `min_size`, `quote`, `state` ) VALUES ( '" + AmountPrecision + "', '" + Base + "', '" + Code + "', '" + Id + "', '" + MarketPrecision + "', '" + MinSize + "', '" + Quote + "', '" + State + "' )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO instrument ( `amount_precision`, `base`, `code`, `id`, `market_precision`, `min_size`, `quote`, `state` ) VALUES ( '" + AmountPrecision + "', '" + Base + "', '" + Code + "', '" + Id + "', '" + MarketPrecision + "', '" + MinSize + "', '" + Quote + "', '" + State + "' ) ON DUPLICATE KEY UPDATE `amount_precision` = '" + AmountPrecision + "', `base` = '" + Base + "', `code` = '" + Code + "', `market_precision` = '" + MarketPrecision + "', `min_size` = '" + MinSize + "', `quote` = '" + Quote + "', `state` = '" + State + "'";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -65,14 +98,14 @@ public object TInstrumentRecord {
             throw "no result found";
         }
 
-		AmountPrecision = cast<int>( mysql_get_field_value( result, "amount_precision" ) );
-		Base = cast<string>( mysql_get_field_value( result, "base" ) );
-		Code = cast<string>( mysql_get_field_value( result, "code" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		MarketPrecision = cast<int>( mysql_get_field_value( result, "market_precision" ) );
-		MinSize = cast<double>( mysql_get_field_value( result, "min_size" ) );
-		Quote = cast<string>( mysql_get_field_value( result, "quote" ) );
-		State = cast<string>( mysql_get_field_value( result, "state" ) );
+       AmountPrecision = cast<int>( mysql_get_field_value( result, "amount_precision" ) );
+       Base = cast<string>( mysql_get_field_value( result, "base" ) );
+       Code = cast<string>( mysql_get_field_value( result, "code" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       MarketPrecision = cast<int>( mysql_get_field_value( result, "market_precision" ) );
+       MinSize = cast<double>( mysql_get_field_value( result, "min_size" ) );
+       Quote = cast<string>( mysql_get_field_value( result, "quote" ) );
+       State = cast<string>( mysql_get_field_value( result, "state" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -88,29 +121,38 @@ public object TInstrumentRecord {
             throw "no result found";
         }
 
-		AmountPrecision = cast<int>( mysql_get_field_value( result, "amount_precision" ) );
-		Base = cast<string>( mysql_get_field_value( result, "base" ) );
-		Code = cast<string>( mysql_get_field_value( result, "code" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		MarketPrecision = cast<int>( mysql_get_field_value( result, "market_precision" ) );
-		MinSize = cast<double>( mysql_get_field_value( result, "min_size" ) );
-		Quote = cast<string>( mysql_get_field_value( result, "quote" ) );
-		State = cast<string>( mysql_get_field_value( result, "state" ) );
+       AmountPrecision = cast<int>( mysql_get_field_value( result, "amount_precision" ) );
+       Base = cast<string>( mysql_get_field_value( result, "base" ) );
+       Code = cast<string>( mysql_get_field_value( result, "code" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       MarketPrecision = cast<int>( mysql_get_field_value( result, "market_precision" ) );
+       MinSize = cast<double>( mysql_get_field_value( result, "min_size" ) );
+       Quote = cast<string>( mysql_get_field_value( result, "quote" ) );
+       State = cast<string>( mysql_get_field_value( result, "state" ) );
     }
 
     public void loadByResult( int result ) modify {
-		AmountPrecision = cast<int>( mysql_get_field_value( result, "amount_precision" ) );
-		Base = cast<string>( mysql_get_field_value( result, "base" ) );
-		Code = cast<string>( mysql_get_field_value( result, "code" ) );
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		MarketPrecision = cast<int>( mysql_get_field_value( result, "market_precision" ) );
-		MinSize = cast<double>( mysql_get_field_value( result, "min_size" ) );
-		Quote = cast<string>( mysql_get_field_value( result, "quote" ) );
-		State = cast<string>( mysql_get_field_value( result, "state" ) );
+       AmountPrecision = cast<int>( mysql_get_field_value( result, "amount_precision" ) );
+       Base = cast<string>( mysql_get_field_value( result, "base" ) );
+       Code = cast<string>( mysql_get_field_value( result, "code" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       MarketPrecision = cast<int>( mysql_get_field_value( result, "market_precision" ) );
+       MinSize = cast<double>( mysql_get_field_value( result, "min_size" ) );
+       Quote = cast<string>( mysql_get_field_value( result, "quote" ) );
+       State = cast<string>( mysql_get_field_value( result, "state" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE instrument SET `amount_precision` = '" + AmountPrecision + "', `base` = '" + Base + "', `code` = '" + Code + "', `market_precision` = '" + MarketPrecision + "', `min_size` = '" + MinSize + "', `quote` = '" + Quote + "', `state` = '" + State + "' WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TInstrumentRecord other const ) const {
@@ -119,6 +161,26 @@ public object TInstrumentRecord {
 
     public string =operator( string ) const {
         return "TInstrumentRecord { '" + AmountPrecision + "', '" + Base + "', '" + Code + "', '" + Id + "', '" + MarketPrecision + "', '" + MinSize + "', '" + Quote + "', '" + State + "' }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;

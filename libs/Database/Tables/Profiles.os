@@ -2,10 +2,10 @@
 import System.Collections.Vector;
 
 public object TProfilesRecord {
-	public int CreateUsers;
-	public int DeleteUsers;
-	public string Identifier;
-	public int UpdateUsers;
+   public int CreateUsers;
+   public int DeleteUsers;
+   public string Identifier;
+   public int UpdateUsers;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -32,6 +32,16 @@ public object TProfilesRecord {
         }
     }
 
+    public void insertIgnore() modify throws {
+        var query = "INSERT IGNORE INTO profiles ( `create_users`, `delete_users`, `identifier`, `update_users` ) VALUES ( '" + CreateUsers + "', '" + DeleteUsers + "', '" + Identifier + "', '" + UpdateUsers + "' )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+    }
+
+
     public void insertOrUpdate() modify throws {
         var query = "INSERT INTO profiles ( `create_users`, `delete_users`, `identifier`, `update_users` ) VALUES ( '" + CreateUsers + "', '" + DeleteUsers + "', '" + Identifier + "', '" + UpdateUsers + "' ) ON DUPLICATE KEY UPDATE `create_users` = '" + CreateUsers + "', `delete_users` = '" + DeleteUsers + "', `identifier` = '" + Identifier + "', `update_users` = '" + UpdateUsers + "'";
 
@@ -52,21 +62,17 @@ public object TProfilesRecord {
             throw "no result found";
         }
 
-		CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
-		DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
+       CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
+       DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
     }
 
     public void loadByResult( int result ) modify {
-		CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
-		DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
-    }
-
-    public void update() modify {
-		// UPDATE: not yet implemented
+       CreateUsers = cast<int>( mysql_get_field_value( result, "create_users" ) );
+       DeleteUsers = cast<int>( mysql_get_field_value( result, "delete_users" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       UpdateUsers = cast<int>( mysql_get_field_value( result, "update_users" ) );
     }
 
     public string =operator( string ) const {

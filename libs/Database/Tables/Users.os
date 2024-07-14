@@ -2,11 +2,11 @@
 import System.Collections.Vector;
 
 public object TUsersRecord {
-	public int Id;
-	public string Identifier;
-	public string LastModified;
-	public string Password;
-	public string Username;
+   public int Id;
+   public string Identifier;
+   public string LastModified;
+   public string Password;
+   public string Username;
 
     public void Constructor( int databaseHandle ) {
         DB = databaseHandle;
@@ -33,21 +33,54 @@ public object TUsersRecord {
         }
     }
 
-    public void insert() modify throws {
+    public void insert( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO users ( `id`, `identifier`, `last_modified`, `password`, `username` ) VALUES ( '" + Id + "', '" + Identifier + "', NULLIF('" + LastModified + "', ''), '" + Password + "', '" + Username + "' )";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
         }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
     }
 
-    public void insertOrUpdate() modify throws {
+    public void insertIgnore( bool reloadAfterInsert = false ) modify throws {
+        var query = "INSERT IGNORE INTO users ( `id`, `identifier`, `last_modified`, `password`, `username` ) VALUES ( '" + Id + "', '" + Identifier + "', NULLIF('" + LastModified + "', ''), '" + Password + "', '" + Username + "' )";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
+        }
+    }
+
+    public void insertOrUpdate( bool reloadAfterInsert = false ) modify throws {
         var query = "INSERT INTO users ( `id`, `identifier`, `last_modified`, `password`, `username` ) VALUES ( '" + Id + "', '" + Identifier + "', NULLIF('" + LastModified + "', ''), '" + Password + "', '" + Username + "' ) ON DUPLICATE KEY UPDATE `identifier` = '" + Identifier + "', `last_modified` = NULLIF('" + LastModified + "', ''), `password` = '" + Password + "', `username` = '" + Username + "'";
 
         var error = mysql_query( DB, query );
         if ( error ) {
             throw mysql_error( DB );
+        }
+
+        if ( reloadAfterInsert ) {
+            if ( !Id ) {
+                Id = getLastInsertId();
+            }
+
+            loadByPrimaryKey( Id );
         }
     }
 
@@ -62,11 +95,11 @@ public object TUsersRecord {
             throw "no result found";
         }
 
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
-		Password = cast<string>( mysql_get_field_value( result, "password" ) );
-		Username = cast<string>( mysql_get_field_value( result, "username" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
+       Password = cast<string>( mysql_get_field_value( result, "password" ) );
+       Username = cast<string>( mysql_get_field_value( result, "username" ) );
     }
 
     public void loadByPrimaryKey( int id ) modify throws {
@@ -82,23 +115,32 @@ public object TUsersRecord {
             throw "no result found";
         }
 
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
-		Password = cast<string>( mysql_get_field_value( result, "password" ) );
-		Username = cast<string>( mysql_get_field_value( result, "username" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
+       Password = cast<string>( mysql_get_field_value( result, "password" ) );
+       Username = cast<string>( mysql_get_field_value( result, "username" ) );
     }
 
     public void loadByResult( int result ) modify {
-		Id = cast<int>( mysql_get_field_value( result, "id" ) );
-		Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
-		LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
-		Password = cast<string>( mysql_get_field_value( result, "password" ) );
-		Username = cast<string>( mysql_get_field_value( result, "username" ) );
+       Id = cast<int>( mysql_get_field_value( result, "id" ) );
+       Identifier = cast<string>( mysql_get_field_value( result, "identifier" ) );
+       LastModified = cast<string>( mysql_get_field_value( result, "last_modified" ) );
+       Password = cast<string>( mysql_get_field_value( result, "password" ) );
+       Username = cast<string>( mysql_get_field_value( result, "username" ) );
     }
 
-    public void update() modify {
-		// UPDATE: not yet implemented
+    public void update( bool reloadAfterUpdate = false ) modify throws {
+        var query = "UPDATE users SET `identifier` = '" + Identifier + "', `last_modified` = NULLIF('" + LastModified + "', ''), `password` = '" + Password + "', `username` = '" + Username + "' WHERE id = '" + Id + "'";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        if ( reloadAfterUpdate ) {
+            loadByPrimaryKey( Id );
+        }
     }
 
     public bool operator==( TUsersRecord other const ) const {
@@ -107,6 +149,26 @@ public object TUsersRecord {
 
     public string =operator( string ) const {
         return "TUsersRecord { '" + Id + "', '" + Identifier + "', NULLIF('" + LastModified + "', ''), '" + Password + "', '" + Username + "' }";
+    }
+
+    private int getLastInsertId() const throws {
+        var query = "SELECT LAST_INSERT_ID() AS id;";
+
+        var error = mysql_query( DB, query );
+        if ( error ) {
+            throw mysql_error( DB );
+        }
+
+        var result = mysql_store_result( DB );
+        if ( !result ) {
+            throw mysql_error( DB );
+        }
+
+        if ( !mysql_fetch_row( result ) ) {
+            throw mysql_error( DB );
+        }
+
+        return cast<int>( mysql_get_field_value( result, "id" ) );
     }
 
     private int DB const;
