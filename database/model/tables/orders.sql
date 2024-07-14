@@ -1,0 +1,22 @@
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` varchar(80) NOT NULL,
+  `account_id` varchar(80) DEFAULT NULL,
+  `status_id` int(11) NOT NULL DEFAULT 0,
+  `instrument_code` varchar(16) NOT NULL,
+  `type` varchar(16) NOT NULL,
+  `side` varchar(8) NOT NULL,
+  `amount` float NOT NULL,
+  `filled_amount` float DEFAULT NULL,
+  `price` float NOT NULL,
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_modified` timestamp NULL DEFAULT NULL,
+  `finished` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `orders_order_id_uindex` (`order_id`),
+  KEY `order_order_status_id_fk` (`status_id`),
+  KEY `orders_account_id_fk` (`account_id`),
+  KEY `orders_side_index` (`side`),
+  CONSTRAINT `order_order_status_id_fk` FOREIGN KEY (`status_id`) REFERENCES `order_status` (`id`),
+  CONSTRAINT `orders_account_id_fk` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
