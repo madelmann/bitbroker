@@ -2,14 +2,20 @@
 // Library imports
 
 // Project imports
+import libs.API.HTTP;
+import libs.Database.Statement;
 import libs.Database.Utils;
 
 
 public namespace API {
 
+    public string GetContentType() const {
+        return getenv( "CONTENT_TYPE" );
+    }
+
     public void require( string key ) throws {
         if ( !isSet( key ) ) {
-            throw "missing " + key;
+        throw "missing key <" + key + ">";
         }
     }
 
@@ -18,7 +24,7 @@ public namespace API {
             return mysql_real_escape_string( Database.Handle, get( key ) );
         }
 
-        throw "missing " + key;
+        throw "missing key <" + key + ">";
     }
 
     public bool retrieve( string key, bool defaultValue ) {

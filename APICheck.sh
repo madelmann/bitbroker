@@ -1,5 +1,5 @@
 
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Define the directory to search
 SEARCH_DIR="api/"
@@ -19,4 +19,10 @@ find "${SEARCH_DIR}" -type f -name "${FILE_PATTERN}" | while read -r FILE; do
         "${FILE}" 1>/dev/null
     fi
 done
+
+echo "API v1 test completed."
+
+echo "Testing: api/v2/app.fcgi"
+"api/v2/app.fcgi" 1>/dev/null
+echo "API v2 test completed."
 
