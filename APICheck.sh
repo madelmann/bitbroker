@@ -1,5 +1,4 @@
-
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Define the directory to search
 SEARCH_DIR="api/"
