@@ -5,7 +5,7 @@
 import libs.Database.Tables.Trade;
 
 
-public namespace PrivateAPI.Trades
+public namespace PrivateAPI.TradesAPI
 {
     public void Query() modify
     {

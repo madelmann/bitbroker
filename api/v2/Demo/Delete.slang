@@ -6,9 +6,9 @@ import libs.Accounts.AccountUtils;
 import libs.API.Utils;
 
 
-public namespace DemoAPI.AccountAPI
+public namespace DemoAPI
 {
-    public void Cancel() modify
+    public void Delete() modify
     {
         try {
             Database.connect();

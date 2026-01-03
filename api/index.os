@@ -6,7 +6,9 @@
 import libs.MainProcessDB;
 
 
-public void Process( int argc, string args ) {
+public void Process( int argc, string args )
+{
 	print( "v1" );
+	print( "v2" );
 }
 

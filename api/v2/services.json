@@ -8,19 +8,19 @@
         "/demo/delete/"           : "DemoAPI.Delete",
         "/demo/deposit/"          : "DemoAPI.Deposit",
         "/demo/query/"            : "DemoAPI.Query",
-        "/demo/withdraw"          : "DemoApi.Withdraw",
+        "/demo/withdraw/"         : "DemoAPI.Withdraw",
         "/private/"               : "PrivateAPI.Default",
-        "/private/balances/"      : "PrivateAPI.Balances",
+        "/private/balances/"      : "PrivateAPI.BalancesAPI.Query",
         "/private/orders/"        : "PrivateAPI.OrderAPI.Default",
         "/private/orders/cancel/" : "PrivateAPI.OrderAPI.Cancel",
         "/private/orders/create/" : "PrivateAPI.OrderAPI.Create",
         "/private/orders/query/"  : "PrivateAPI.OrderAPI.Query",
-        "/private/trades/"        : "PrivateAPI.Trades",
+        "/private/trades/"        : "PrivateAPI.TradesAPI.Query",
         "/public/"                : "PublicAPI.Default",
         "/public/currencies/"     : "PublicAPI.CurrenciesAPI.Query",
         "/public/instruments/"    : "PublicAPI.InstrumentsAPI.Query",
         "/public/marketticker/"   : "PublicAPI.MarketTickerAPI.Query",
         "/public/orderbook/"      : "PublicAPI.OrderBookAPI.Query",
-        "/time"                   : "Time"
+        "/time/"                   : "Time"
     }
 }

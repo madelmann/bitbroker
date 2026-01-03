@@ -6,7 +6,7 @@ import libs.Database.Lookups.OrderStatus;
 import libs.Database.Views.VOrdersWithTrades;
 
 
-public namespace PrivateAPI.Orders
+public namespace PrivateAPI.OrderAPI
 {
     public void Query() modify
     {

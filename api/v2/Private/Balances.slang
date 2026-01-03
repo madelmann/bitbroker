@@ -6,7 +6,7 @@ import libs.API.HTTP;
 import libs.Database.Tables.Balance;
 
 
-public namespace PrivateAPI.Balances
+public namespace PrivateAPI.BalancesAPI
 {
     public void Query() modify
     {

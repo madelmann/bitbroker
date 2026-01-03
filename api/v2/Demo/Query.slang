@@ -5,7 +5,7 @@
 import libs.Database.Tables.Account;
 
 
-public namespace DemoAPI.AccountAPI
+public namespace DemoAPI
 {
     public void Query() modify
     {

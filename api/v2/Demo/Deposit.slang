@@ -5,7 +5,7 @@
 import libs.Database.Tables.Balance;
 
 
-public namespace DemoAPI.AccountAPI
+public namespace DemoAPI
 {
     public void Deposit() modify
     {
